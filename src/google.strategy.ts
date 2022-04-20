@@ -3,6 +3,7 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 
 import { Injectable } from '@nestjs/common';
+import { identity } from 'rxjs';
 
 config();
 
@@ -17,14 +18,21 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         });
     }
     async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
-        const { name, emails, photos } = profile
+        const { id, name, emails, photos } = profile
         const user = {
-            email: emails[0].value,
-            firstName: name.givenName,
-            lastName: name.familyName,
-            picture: photos[0].value,
-            accessToken
+            profile,
+            accessToken,
+            refreshToken
         }
+        // {
+        //     id: id,
+        //     email: emails[0].value,
+        //     firstName: name.givenName,
+        //     lastName: name.familyName,
+        //     picture: photos[0].value,
+        //     accessToken,
+        //     profile 
+        // }
         done(null, user);
     }
 }

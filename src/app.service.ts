@@ -11,6 +11,7 @@ export class AppService {
       user: req.user
     }
   }
+  
   hello() {
     return "Hello"
   }
